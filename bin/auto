@@ -1,0 +1,40 @@
+#!/usr/bin/php
+<?php
+use AutoValue\BuilderClass\BuilderClassType;
+use AutoValue\Console\BuildCommand;
+use AutoValue\TemplateClassLocator;
+use AutoValue\TemplateDirectoryProcessor;
+use AutoValue\ValueClass\ValueClassType;
+use Roave\BetterReflection\BetterReflection;
+use Roave\BetterReflection\Reflector\ClassReflector;
+use Roave\BetterReflection\SourceLocator\Type\ComposerSourceLocator;
+
+$classLoader = getAutoloader([
+    \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'vendor',
+    \dirname(__DIR__, 3),
+]);
+if (!$classLoader) {
+    \fwrite(\STDERR, 'Vendor autoloader not found.');
+    exit(1);
+}
+
+$astLocator = (new BetterReflection())->astLocator();
+$classLocator = new TemplateClassLocator($astLocator);
+$classReflector = new ClassReflector(new ComposerSourceLocator($classLoader, $astLocator));
+$valueClassType = ValueClassType::withDefaultConfiguration();
+$autoClassTypes = [$valueClassType, BuilderClassType::withDefaultConfiguration($valueClassType)];
+$templateDirectoryProcessor = new TemplateDirectoryProcessor($astLocator, $classLocator, $autoClassTypes);
+$buildCommand = new BuildCommand($templateDirectoryProcessor);
+$application = new \Symfony\Component\Console\Application();
+$application->add($buildCommand);
+
+$application->run();
+
+function getAutoloader(array $candidateVendorDirs) {
+    foreach ($candidateVendorDirs as $dir) {
+        $filePath = $dir . \DIRECTORY_SEPARATOR . 'autoload.php';
+        if (\file_exists($filePath)) {
+            return require $filePath;
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "name": "space48/auto-value",
+    "type": "lib",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Josh Di Fabio",
+            "email": "joshdifabio@gmail.com"
+        }
+    ],
+    "require": {
+        "roave/better-reflection": "^3.0",
+        "symfony/console": "^4.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "AutoValue\\": "src"
+        },
+        "files": [ "src/functions.php" ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AutoValue\\Demo\\": ["demo/src", "demo/auto"]
+        }
+    }
+}
