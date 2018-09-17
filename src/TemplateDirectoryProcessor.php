@@ -3,8 +3,10 @@ namespace AutoValue;
 
 use Composer\Autoload\ClassLoader;
 use Roave\BetterReflection\Reflector\ClassReflector;
+use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\ComposerSourceLocator;
 use Roave\BetterReflection\SourceLocator\Ast\Locator as AstLocator;
+use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
 /**
  * @author Josh Di Fabio <joshdifabio@gmail.com>
@@ -14,6 +16,7 @@ class TemplateDirectoryProcessor
     private $astLocator;
     private $autoClassLocator;
     private $autoClassTypeMap;
+    private $sourceLocator;
 
     /**
      * @param AutoClassType[] $autoClassTypes
@@ -21,7 +24,8 @@ class TemplateDirectoryProcessor
     public function __construct(
         AstLocator $astLocator,
         TemplateClassLocator $templateClassLocator,
-        array $autoClassTypes
+        array $autoClassTypes,
+        SourceLocator $sourceLocator
     ) {
         $this->astLocator = $astLocator;
         $this->autoClassLocator = $templateClassLocator;
@@ -29,12 +33,14 @@ class TemplateDirectoryProcessor
         foreach ($autoClassTypes as $autoClassType) {
             $this->autoClassTypeMap[$autoClassType->annotation()] = $autoClassType;
         }
+        $this->sourceLocator = $sourceLocator;
     }
 
     public function generateAutoClasses(string $directory): \Iterator
     {
         $composerClassLoader = $this->getComposerClassLoader($directory);
-        $sourceLocator = new ComposerSourceLocator($composerClassLoader, $this->astLocator);
+        $composerSourceLocator = new ComposerSourceLocator($composerClassLoader, $this->astLocator);
+        $sourceLocator = new AggregateSourceLocator([$this->sourceLocator, $composerSourceLocator]);
         $classReflector = new ClassReflector($sourceLocator);
         $templateClasses = $this->autoClassLocator->locateTemplateClasses($directory);
         /** @var TemplateClass $templateClass */

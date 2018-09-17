@@ -8,6 +8,7 @@ use AutoValue\ValueClass\ValueClassType;
 use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\SourceLocator\Type\ComposerSourceLocator;
+use Roave\BetterReflection\SourceLocator\Type\PhpInternalSourceLocator;
 
 $classLoader = getAutoloader([
     \dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'vendor',
@@ -23,7 +24,7 @@ $classLocator = new TemplateClassLocator($astLocator);
 $classReflector = new ClassReflector(new ComposerSourceLocator($classLoader, $astLocator));
 $valueClassType = ValueClassType::withDefaultConfiguration();
 $autoClassTypes = [$valueClassType, BuilderClassType::withDefaultConfiguration($valueClassType)];
-$templateDirectoryProcessor = new TemplateDirectoryProcessor($astLocator, $classLocator, $autoClassTypes);
+$templateDirectoryProcessor = new TemplateDirectoryProcessor($astLocator, $classLocator, $autoClassTypes, new PhpInternalSourceLocator($astLocator));
 $buildCommand = new BuildCommand($templateDirectoryProcessor);
 $application = new \Symfony\Component\Console\Application();
 $application->add($buildCommand);
