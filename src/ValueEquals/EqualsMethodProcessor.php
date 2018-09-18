@@ -94,7 +94,7 @@ class EqualsMethodProcessor extends MethodProcessor
         $testsForMixedProperties = \array_merge(
             $mixedProperties
                 ->mapPropertyNames(function (string $propertyName) use ($valueParam) {
-                    return "\$compareValues(\$this->{$propertyName}, \${$valueParam}->$propertyName)";
+                    return "\$compareValues(\$this->{$propertyName}, \${$valueParam}->$propertyName) === 0";
                 }),
 
             $arrayProperties
@@ -118,10 +118,12 @@ class EqualsMethodProcessor extends MethodProcessor
         }
         \$compareValues = static function (\$value1, \$value2) use (&\$compareValues) {
             if (\is_array(\$value1)) {
-                return \is_array(\$value2) && !\array_udiff_assoc(\$value1, \$value2, \$compareValues);
+                \$equal = \is_array(\$value2) && !\array_udiff_assoc(\$value1, \$value2, \$compareValues);
+            } else {
+                \$equal = \$value1 === \$value2
+                    || (\method_exists(\$value1, 'equals') ? \$value1->equals(\$value2) : \is_object(\$value1) && \$value1 == \$value2);
             }
-            return \$value1 === \$value2
-                || (\method_exists(\$value1, 'equals') ? \$value1->equals(\$value2) : \is_object(\$value1) && \$value1 == \$value2);
+            return \$equal ? 0 : 1;
         };
         return {$this->getTestsCode($testsForMixedProperties)};
 THEPHP;
