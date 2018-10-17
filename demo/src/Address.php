@@ -15,6 +15,8 @@ abstract class Address
 
     public abstract function lines(): array;
 
+    public abstract function withLines(string ...$lines): self;
+
     public abstract function city(): ?string;
 
     public abstract function country(): string;

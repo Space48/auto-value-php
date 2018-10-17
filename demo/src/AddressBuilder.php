@@ -6,7 +6,7 @@ namespace AutoValue\Demo;
  */
 abstract class AddressBuilder
 {
-    public abstract function setLines(array $lines): self;
+    public abstract function setLines(string ...$lines): self;
 
     public abstract function setCity(string $city): self;
 

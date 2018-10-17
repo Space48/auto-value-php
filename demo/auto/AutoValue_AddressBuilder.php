@@ -8,7 +8,7 @@ final class AutoValue_AddressBuilder extends AddressBuilder
 {   
     private $propertyValues = [];
     
-    public function setLines(array $lines): \AutoValue\Demo\AddressBuilder
+    public function setLines(string ...$lines): \AutoValue\Demo\AddressBuilder
     {
         $this->propertyValues['lines'] = $lines;
         return $this;

@@ -61,6 +61,13 @@ final class AutoValue_Address extends Address
         ]);
     }
 
+    public function withLines(string ...$lines): \AutoValue\Demo\Address
+    {
+        $result = clone $this;
+        $result->lines = $lines;
+        return $result;
+    }
+
     public function withCountry(string $country): \AutoValue\Demo\Address
     {
         $result = clone $this;

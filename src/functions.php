@@ -29,8 +29,9 @@ function generateParameters(array $reflectionParameters): string
 {
     return \implode(', ', \array_map(function (ReflectionParameter $parameter) {
         $typeHintPart = $parameter->getType() ? generateTypeHint($parameter->getType(), $parameter->getDeclaringClass()) . ' ' : '';
+        $variadicPart = $parameter->isVariadic() ? '...' : '';
         $defaultValuePart = $parameter->isDefaultValueAvailable() ? ' = ' . \var_export($parameter->getDefaultValue(), true) : '';
-        return $typeHintPart . '$' . $parameter->getName() . $defaultValuePart;
+        return $typeHintPart . $variadicPart . '$' . $parameter->getName() . $defaultValuePart;
     }, $reflectionParameters));
 }
 
