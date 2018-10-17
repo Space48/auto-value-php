@@ -25,5 +25,6 @@
         "psr-4": {
             "AutoValue\\Demo\\": ["demo/src", "demo/auto"]
         }
-    }
+    },
+    "bin": ["bin/auto"]
 }
