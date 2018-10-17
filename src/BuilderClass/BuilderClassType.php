@@ -43,7 +43,7 @@ class BuilderClassType implements AutoClassType
     public function generateAutoClass(ClassReflector $reflector, string $templateBuilderClassName): string
     {
         $templateBuilderClass = $reflector->reflect($templateBuilderClassName);
-        $abstractMethods = ReflectionMethodCollection::of($templateBuilderClass->getMethods(\ReflectionMethod::IS_ABSTRACT));
+        $abstractMethods = ReflectionMethodCollection::of($templateBuilderClass->getMethods())->filterAbstract();
         $templateValueClassName = self::getValueClass($templateBuilderClassName);
         $properties = $this->propertyDeducer->deduceProperties($reflector, $templateValueClassName);
         $methodDefinitions = $this->methodGenerators->generateMethods($abstractMethods, $properties);

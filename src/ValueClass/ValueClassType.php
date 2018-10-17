@@ -46,7 +46,7 @@ class ValueClassType implements AutoClassType, PropertyDeducer
     public function deduceProperties(ClassReflector $reflector, string $templateValueClasName): PropertyCollection
     {
         $templateValueClass = $reflector->reflect($templateValueClasName);
-        $abstractMethods = ReflectionMethodCollection::of($templateValueClass->getMethods(\ReflectionMethod::IS_ABSTRACT));
+        $abstractMethods = ReflectionMethodCollection::of($templateValueClass->getMethods())->filterAbstract();
         [$properties] = $this->methodProcessors->processMethods($abstractMethods);
         return $properties;
     }
@@ -54,7 +54,7 @@ class ValueClassType implements AutoClassType, PropertyDeducer
     public function generateAutoClass(ClassReflector $reflector, string $templateValueClasName): string
     {
         $templateValueClass = $reflector->reflect($templateValueClasName);
-        $abstractMethods = ReflectionMethodCollection::of($templateValueClass->getMethods(\ReflectionMethod::IS_ABSTRACT));
+        $abstractMethods = ReflectionMethodCollection::of($templateValueClass->getMethods())->filterAbstract();
         [$properties, $methodDefinitions] = $this->methodProcessors->processMethods($abstractMethods);
         return $this->classGenerator->generateClass($templateValueClass, $properties, $methodDefinitions);
     }

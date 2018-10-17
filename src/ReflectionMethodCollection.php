@@ -48,6 +48,14 @@ class ReflectionMethodCollection implements \IteratorAggregate
         return $result;
     }
 
+    public function filterAbstract(): self
+    {
+        return $this->filter(function (ReflectionMethod $method): bool {
+            return \ReflectionMethod::IS_ABSTRACT & $method->getModifiers()
+                || $method->getDeclaringClass()->isInterface();
+        });
+    }
+
     public function reduce($value, callable $fn)
     {
         return \array_reduce($this->items, $fn, $value);

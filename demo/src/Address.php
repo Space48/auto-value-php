@@ -4,7 +4,7 @@ namespace AutoValue\Demo;
 /**
  * @AutoValue
  */
-abstract class Address
+abstract class Address implements MyValueType
 {
     public static function builder(): AddressBuilder
     {
@@ -28,6 +28,4 @@ abstract class Address
     public abstract function metadata();
 
     public abstract function foo();
-
-    public abstract function equals($subject): bool;
 }

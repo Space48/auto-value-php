@@ -26,12 +26,12 @@ final class AutoValue_Address extends Address
         }
     }
     
-    public function equals($subject): bool
+    public function equals($foo): bool
     {
-        $typedPropertiesAreEqual = $subject instanceof self
-            && $this->city === $subject->city
-            && $this->country === $subject->country
-            && $this->postCode->equals($subject->postCode);
+        $typedPropertiesAreEqual = $foo instanceof self
+            && $this->city === $foo->city
+            && $this->country === $foo->country
+            && $this->postCode->equals($foo->postCode);
         if (!$typedPropertiesAreEqual) {
             return false;
         }
@@ -44,9 +44,9 @@ final class AutoValue_Address extends Address
             }
             return $equal ? 0 : 1;
         };
-        return $compareValues($this->metadata, $subject->metadata) === 0
-            && $compareValues($this->foo, $subject->foo) === 0
-            && !\array_udiff_assoc($this->lines, $subject->lines, $compareValues);
+        return $compareValues($this->metadata, $foo->metadata) === 0
+            && $compareValues($this->foo, $foo->foo) === 0
+            && !\array_udiff_assoc($this->lines, $foo->lines, $compareValues);
     }
 
     public function toBuilder(): \AutoValue\Demo\AddressBuilder
