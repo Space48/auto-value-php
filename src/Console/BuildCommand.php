@@ -45,7 +45,7 @@ class BuildCommand extends Command
         foreach ($this->templateDirectoryProcessor->generateAutoClasses($sourceDirectory) as [$relativeFilePath, $autoClass]) {
             \fwrite(\STDERR, "$relativeFilePath\n");
             $absoluteFilePath = $targetDirectory . DIRECTORY_SEPARATOR . $relativeFilePath;
-            \file_put_contents($absoluteFilePath, "<?php\n$autoClass");
+            \file_put_contents($absoluteFilePath, "<?php\n$autoClass\n");
         }
     }
 }
