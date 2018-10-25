@@ -23,7 +23,7 @@ class AccessorMethodProcessor extends MethodProcessor
             ->methodNames();
     }
 
-    public function deduceProperties(ReflectionMethodCollection $matchedMethods): PropertyCollection
+    public function inferProperties(ReflectionMethodCollection $matchedMethods): PropertyCollection
     {
         $templateUsesPrefixes = self::templateUsesPrefixes($matchedMethods);
         return $matchedMethods->reduce(PropertyCollection::create(), function (PropertyCollection $properties, ReflectionMethod $method) use ($templateUsesPrefixes) {

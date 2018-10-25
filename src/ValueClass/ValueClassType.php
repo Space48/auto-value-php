@@ -3,7 +3,7 @@ namespace AutoValue\ValueClass;
 
 use AutoValue\AutoClassType;
 use AutoValue\PropertyCollection;
-use AutoValue\PropertyDeducer;
+use AutoValue\PropertyInferrer;
 use AutoValue\ReflectionMethodCollection;
 use AutoValue\ValueEquals\EqualsMethodProcessor;
 use AutoValue\ValueToArray\ToArrayMethodProcessor;
@@ -14,7 +14,7 @@ use Roave\BetterReflection\Reflector\ClassReflector;
 /**
  * @author Josh Di Fabio <joshdifabio@gmail.com>
  */
-class ValueClassType implements AutoClassType, PropertyDeducer
+class ValueClassType implements AutoClassType, PropertyInferrer
 {
     private $methodProcessors;
     private $classGenerator;
@@ -43,7 +43,7 @@ class ValueClassType implements AutoClassType, PropertyDeducer
         return 'AutoValue';
     }
 
-    public function deduceProperties(ClassReflector $reflector, string $templateValueClasName): PropertyCollection
+    public function inferProperties(ClassReflector $reflector, string $templateValueClasName): PropertyCollection
     {
         $templateValueClass = $reflector->reflect($templateValueClasName);
         $abstractMethods = ReflectionMethodCollection::of($templateValueClass->getMethods())->filterAbstract();

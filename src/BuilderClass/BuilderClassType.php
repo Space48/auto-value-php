@@ -3,7 +3,7 @@ namespace AutoValue\BuilderClass;
 
 use AutoValue\AutoClassType;
 use AutoValue\MethodGeneratorList;
-use AutoValue\PropertyDeducer;
+use AutoValue\PropertyInferrer;
 use AutoValue\ReflectionMethodCollection;
 use Roave\BetterReflection\Reflector\ClassReflector;
 
@@ -12,27 +12,27 @@ use Roave\BetterReflection\Reflector\ClassReflector;
  */
 class BuilderClassType implements AutoClassType
 {
-    private $propertyDeducer;
+    private $propertyInferrer;
     private $methodGenerators;
     private $classGenerator;
 
     public function __construct(
-        PropertyDeducer $propertyDeducer,
+        PropertyInferrer $propertyInferrer,
         MethodGeneratorList $methodGenerators,
         BuilderClassGenerator $classGenerator
     ) {
-        $this->propertyDeducer = $propertyDeducer;
+        $this->propertyInferrer = $propertyInferrer;
         $this->methodGenerators = $methodGenerators;
         $this->classGenerator = $classGenerator;
     }
 
-    public static function withDefaultConfiguration(PropertyDeducer $propertyDeducer): self
+    public static function withDefaultConfiguration(PropertyInferrer $propertyInferrer): self
     {
         $methodGenerators = new MethodGeneratorList([
             new SetterMethodGenerator(),
             new BuildMethodGenerator(),
         ]);
-        return new self($propertyDeducer, $methodGenerators, new BuilderClassGenerator());
+        return new self($propertyInferrer, $methodGenerators, new BuilderClassGenerator());
     }
 
     public function annotation(): string
@@ -45,7 +45,7 @@ class BuilderClassType implements AutoClassType
         $templateBuilderClass = $reflector->reflect($templateBuilderClassName);
         $abstractMethods = ReflectionMethodCollection::of($templateBuilderClass->getMethods())->filterAbstract();
         $templateValueClassName = self::getValueClass($templateBuilderClassName);
-        $properties = $this->propertyDeducer->deduceProperties($reflector, $templateValueClassName);
+        $properties = $this->propertyInferrer->inferProperties($reflector, $templateValueClassName);
         $methodDefinitions = $this->methodGenerators->generateMethods($abstractMethods, $properties);
         return $this->classGenerator->generateClass($templateBuilderClass, $methodDefinitions);
     }

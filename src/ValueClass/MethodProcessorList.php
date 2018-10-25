@@ -37,12 +37,12 @@ class MethodProcessorList
         if (!$remainingAbstractMethods->isEmpty()) {
             throw new \Exception('Some abstract methods could not be processed.');
         }
-        $properties = $this->deduceProperties($matchedMethodsByProcessor);
+        $properties = $this->inferProperties($matchedMethodsByProcessor);
         $methodDefinitions = $this->generateMethods($matchedMethodsByProcessor, $properties);
         return [$properties, $methodDefinitions];
     }
 
-    private function deduceProperties(array $matchedMethodsByProcessor): PropertyCollection
+    private function inferProperties(array $matchedMethodsByProcessor): PropertyCollection
     {
         $properties = PropertyCollection::create();
         /**
@@ -50,7 +50,7 @@ class MethodProcessorList
          * @var ReflectionMethodCollection $matchedMethods
          */
         foreach ($matchedMethodsByProcessor as [$methodProcessor, $matchedMethods]) {
-            $properties = $properties->plus($methodProcessor->deduceProperties($matchedMethods));
+            $properties = $properties->plus($methodProcessor->inferProperties($matchedMethods));
         }
         return $properties;
     }

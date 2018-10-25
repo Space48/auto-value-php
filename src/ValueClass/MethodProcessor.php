@@ -15,7 +15,7 @@ abstract class MethodProcessor implements MethodGenerator
      */
     public abstract function matchMethods(ReflectionMethodCollection $reflectionMethods): array;
 
-    public function deduceProperties(ReflectionMethodCollection $matchedMethods): PropertyCollection
+    public function inferProperties(ReflectionMethodCollection $matchedMethods): PropertyCollection
     {
         return PropertyCollection::create();
     }
