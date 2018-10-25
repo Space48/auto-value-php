@@ -20,7 +20,7 @@ for each desired property, an equals method, and bearing the `@AutoValue` annota
  */
 abstract class Animal
 {
-  static function create(String $name, int $numberOfLegs): self
+  static function create(string $name, int $numberOfLegs): self
   {
     return new AutoValue_Animal([
       'name' => $name,
