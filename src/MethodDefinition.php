@@ -16,7 +16,6 @@ class MethodDefinition
         return $methodDefinition;
     }
 
-
     public function reflection(): ReflectionMethod
     {
         return $this->reflection;
