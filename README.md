@@ -23,4 +23,4 @@ code almost any aspect of your class exactly the way you want it.
 
 For more information, consult the [detailed documentation](docs/index.md).
 
-[Google AutoValue]: https://github.com/google/auto/blob/master/value]
+[Google AutoValue]: https://github.com/google/auto/blob/master/value
