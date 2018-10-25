@@ -1,6 +1,12 @@
 {
     "name": "space48/auto-value",
     "type": "lib",
+    "description": "Generated immutable value classes for PHP7.1+",
+    "keywords": [
+        "value",
+        "value objects",
+        "ddd"
+    ],
     "license": "MIT",
     "authors": [
         {
