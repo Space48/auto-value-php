@@ -25,7 +25,7 @@ class BuildTest extends TestCase
         exec($shellCommand, $stdoutLines, $exitCode);
 
         self::assertSame(0, $exitCode);
-        self::assertSame($expectedAutoClassFilePaths, $stdoutLines);
+        self::assertArrayValuesSame($expectedAutoClassFilePaths, $stdoutLines);
 
         include $sourceDir . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
         $this->requireFiles($expectedAutoClassFilePaths);
@@ -112,5 +112,14 @@ class BuildTest extends TestCase
         foreach ($files as $file) {
             require $file;
         }
+    }
+
+    private static function assertArrayValuesSame($expected, $actual): void
+    {
+        $expectedValues = array_values($expected);
+        $actualValues = array_values($actual);
+        sort($expectedValues);
+        sort($actualValues);
+        self::assertSame($expectedValues, $actualValues);
     }
 }
