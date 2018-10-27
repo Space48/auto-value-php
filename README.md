@@ -2,6 +2,8 @@
 
 *Generated immutable value classes for PHP7.1+*
 
+[![Build Status](https://travis-ci.org/Space48/auto-value-php.svg?branch=master)](https://travis-ci.org/Space48/auto-value-php)
+
 *AutoValue PHP is a port of [Google AutoValue] (Kevin Bourrillion, Éamonn
 McManus) from Java to PHP. The documentation in this package is copied directly
 from Google AutoValue and then translated from Java to PHP, with irrelevant
