@@ -279,7 +279,7 @@ abstract class Foo
 {
   abstract function barProperty(): Bar;
 
-  function derivedProperty(): String
+  function derivedProperty(): string
   {
     return someFunctionOf($this->barProperty());
   }
@@ -305,7 +305,7 @@ abstract class Foo
   /**
    * @Memoized
    */
-  function derivedProperty(): String
+  function derivedProperty(): string
   {
     return someFunctionOf($this->barProperty());
   }
