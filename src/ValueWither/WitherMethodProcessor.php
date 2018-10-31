@@ -16,9 +16,10 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
  */
 class WitherMethodProcessor extends MethodProcessor
 {
-    public function matchMethods(ReflectionMethodCollection $reflectionMethods): array
+    public function matchMethods(ReflectionMethodCollection $methods): array
     {
-        return $reflectionMethods
+        return $methods
+            ->filterAbstract()
             ->filter(function (ReflectionMethod $reflectionMethod) {
                 return getPropertyName($reflectionMethod->getShortName(), 'with') !== null
                     && $reflectionMethod->getNumberOfParameters() === 1

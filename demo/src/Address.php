@@ -28,4 +28,12 @@ abstract class Address implements MyValueType
     public abstract function metadata();
 
     public abstract function foo();
+
+    /**
+     * @Memoize
+     */
+    public function linesString(): string
+    {
+        return implode(', ', $this->lines());
+    }
 }

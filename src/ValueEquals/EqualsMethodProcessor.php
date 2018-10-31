@@ -17,9 +17,10 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
  */
 class EqualsMethodProcessor extends MethodProcessor
 {
-    public function matchMethods(ReflectionMethodCollection $reflectionMethods): array
+    public function matchMethods(ReflectionMethodCollection $methods): array
     {
-        return $reflectionMethods
+        return $methods
+            ->filterAbstract()
             ->filter(\Closure::fromCallable([$this, 'matchMethod']))
             ->methodNames();
     }

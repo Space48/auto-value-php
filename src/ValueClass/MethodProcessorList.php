@@ -21,20 +21,20 @@ class MethodProcessorList
         $this->methodProcessors = $methodProcessors;
     }
 
-    public function processMethods(ReflectionMethodCollection $abstractMethods): array
+    public function processMethods(ReflectionMethodCollection $methods): array
     {
-        $remainingAbstractMethods = $abstractMethods;
+        $unprocessedMethods = $methods;
         $matchedMethodsByProcessor = [];
         /** @var MethodProcessor $methodProcessor */
         foreach ($this->methodProcessors as $methodProcessor) {
-            $matchedMethodNames = $methodProcessor->matchMethods($remainingAbstractMethods);
-            $matchedMethods = $remainingAbstractMethods->filter(function (ReflectionMethod $reflectionMethod) use ($matchedMethodNames) {
+            $matchedMethodNames = $methodProcessor->matchMethods($unprocessedMethods);
+            $matchedMethods = $unprocessedMethods->filter(function (ReflectionMethod $reflectionMethod) use ($matchedMethodNames) {
                 return \in_array($reflectionMethod->getShortName(), $matchedMethodNames, true);
             });
-            $remainingAbstractMethods = $remainingAbstractMethods->withoutMethods($matchedMethodNames);
+            $unprocessedMethods = $unprocessedMethods->withoutMethods($matchedMethodNames);
             $matchedMethodsByProcessor[] = [$methodProcessor, $matchedMethods];
         }
-        if (!$remainingAbstractMethods->isEmpty()) {
+        if (!$unprocessedMethods->filterAbstract()->isEmpty()) {
             throw new \Exception('Some abstract methods could not be processed.');
         }
         $properties = $this->inferProperties($matchedMethodsByProcessor);

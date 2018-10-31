@@ -2,6 +2,7 @@
 namespace AutoValue\ValueClass;
 
 use AutoValue\AutoClassType;
+use AutoValue\Memoize\MemoizeMethodProcessor;
 use AutoValue\PropertyCollection;
 use AutoValue\PropertyInferrer;
 use AutoValue\ReflectionMethodCollection;
@@ -33,6 +34,7 @@ class ValueClassType implements AutoClassType, PropertyInferrer
             new ToArrayMethodProcessor(),
             new WitherMethodProcessor(),
             new AccessorMethodProcessor(),
+            new MemoizeMethodProcessor(),
         ]);
         $classGenerator = new ValueClassGenerator();
         return new self($methodProcessors, $classGenerator);
@@ -46,16 +48,16 @@ class ValueClassType implements AutoClassType, PropertyInferrer
     public function inferProperties(ClassReflector $reflector, string $templateValueClasName): PropertyCollection
     {
         $templateValueClass = $reflector->reflect($templateValueClasName);
-        $abstractMethods = ReflectionMethodCollection::of($templateValueClass->getMethods())->filterAbstract();
-        [$properties] = $this->methodProcessors->processMethods($abstractMethods);
+        $methods = ReflectionMethodCollection::of($templateValueClass->getMethods());
+        [$properties] = $this->methodProcessors->processMethods($methods);
         return $properties;
     }
 
     public function generateAutoClass(ClassReflector $reflector, string $templateValueClasName): string
     {
         $templateValueClass = $reflector->reflect($templateValueClasName);
-        $abstractMethods = ReflectionMethodCollection::of($templateValueClass->getMethods())->filterAbstract();
-        [$properties, $methodDefinitions] = $this->methodProcessors->processMethods($abstractMethods);
+        $methods = ReflectionMethodCollection::of($templateValueClass->getMethods());
+        [$properties, $methodDefinitions] = $this->methodProcessors->processMethods($methods);
         return $this->classGenerator->generateClass($templateValueClass, $properties, $methodDefinitions);
     }
 }

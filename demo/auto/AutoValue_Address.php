@@ -105,6 +105,14 @@ final class AutoValue_Address extends Address
         return $this->foo;
     }
 
+    public function linesString(): string
+    {
+        if (!isset($this->__memoized['linesString'])) {
+            $this->__memoized['linesString'] = parent::linesString();
+        }
+        return $this->__memoized['linesString'];
+    }
+
     /**
      * @internal
      */

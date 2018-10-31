@@ -6,5 +6,5 @@ namespace AutoValue;
  */
 interface MethodGenerator
 {
-    public function generateMethods(ReflectionMethodCollection $abstractMethods, PropertyCollection $properties): MethodDefinitionCollection;
+    public function generateMethods(ReflectionMethodCollection $matchedMethods, PropertyCollection $properties): MethodDefinitionCollection;
 }

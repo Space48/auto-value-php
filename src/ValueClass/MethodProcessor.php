@@ -13,7 +13,7 @@ abstract class MethodProcessor implements MethodGenerator
     /**
      * @return string[] Names of matched methods
      */
-    public abstract function matchMethods(ReflectionMethodCollection $reflectionMethods): array;
+    public abstract function matchMethods(ReflectionMethodCollection $methods): array;
 
     public function inferProperties(ReflectionMethodCollection $matchedMethods): PropertyCollection
     {

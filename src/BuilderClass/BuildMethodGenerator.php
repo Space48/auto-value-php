@@ -14,9 +14,10 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
  */
 class BuildMethodGenerator implements MethodGenerator
 {
-    public function generateMethods(ReflectionMethodCollection $abstractMethods, PropertyCollection $properties): MethodDefinitionCollection
+    public function generateMethods(ReflectionMethodCollection $matchedMethods, PropertyCollection $properties): MethodDefinitionCollection
     {
-        return $abstractMethods
+        return $matchedMethods
+            ->filterAbstract()
             ->filter(self::abstractMethodMatcher())
             ->reduce(MethodDefinitionCollection::create(), function (MethodDefinitionCollection $methodDefinitions, ReflectionMethod $method) use ($properties) {
                 $valueTemplateClass = $method->getReturnType()->targetReflectionClass()->getShortName();

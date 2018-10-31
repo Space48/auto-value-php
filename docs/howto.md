@@ -267,56 +267,54 @@ item](practices.md#simple). On balance, we don't think it's worth it.
 
 ## <a name="memoize"></a>... memoize ("cache") derived properties?
 
-*Coming soon*
-
-<!--
 Sometimes your class has properties that are derived from the ones that
 AutoValue implements. You'd typically implement them with a concrete method that
 uses the other properties:
 
-```java
-@AutoValue
-abstract class Foo {
-  abstract Bar barProperty();
+```php
+/**
+ * @AutoValue
+ */
+abstract class Foo
+{
+  abstract function barProperty(): Bar;
 
-  String derivedProperty() {
-    return someFunctionOf(barProperty());
+  function derivedProperty(): String
+  {
+    return someFunctionOf($this->barProperty());
   }
 }
 ```
 
 But what if `someFunctionOf(Bar)` is expensive? You'd like to calculate it only
 one time, then cache and reuse that value for all future calls. Normally,
-thread-safe lazy initialization involves a lot of tricky boilerplate.
+lazy initialization involves a bit of boilerplate.
 
 Instead, just write the derived-property accessor method as above, and
-annotate it with [`@Memoized`]. Then AutoValue will override that method to
+annotate it with `@Memoized`. Then AutoValue will override that method to
 return a stored value after the first call:
 
-```java
-@AutoValue
-abstract class Foo {
-  abstract Bar barProperty();
+```php
+/**
+ * @AutoValue
+ */
+abstract class Foo
+{
+  abstract function barProperty(): Bar;
 
-  @Memoized
-  String derivedProperty() {
-    return someFunctionOf(barProperty());
+  /**
+   * @Memoized
+   */
+  function derivedProperty(): String
+  {
+    return someFunctionOf($this->barProperty());
   }
 }
 ```
 
-Then your method will be called at most once, even if multiple threads attempt
-to access the property concurrently.
+Then your method will be called at most once.
 
 The annotated method must have the usual form of an accessor method, and may not
 be `abstract`, `final`, or `private`.
 
-The stored value will not be used in the implementation of `equals`, `hashCode`,
-or `toString`.
-
-If a `@Memoized` method is also annotated with `@Nullable`, then `null` values
-will be stored; if not, then the overriding method throws `NullPointerException`
-when the annotated method returns `null`.
-
-[`@Memoized`]: https://github.com/google/auto/blob/master/value/src/main/java/com/google/auto/value/extension/memoized/Memoized.java
--->
+The stored value will not be used in the implementation of `equals`.

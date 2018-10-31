@@ -16,15 +16,16 @@ class MethodGeneratorList
         $this->methodGenerators = $methodGenerators;
     }
 
-    public function generateMethods(ReflectionMethodCollection $abstractMethods, PropertyCollection $properties): MethodDefinitionCollection
+    public function generateMethods(ReflectionMethodCollection $methods, PropertyCollection $properties): MethodDefinitionCollection
     {
+        $unprocessedMethods = $methods;
         $methodDefinitions = MethodDefinitionCollection::create();
         foreach ($this->methodGenerators as $methodGenerator) {
-            $_methodDefinitions = $methodGenerator->generateMethods($abstractMethods, $properties);
+            $_methodDefinitions = $methodGenerator->generateMethods($unprocessedMethods, $properties);
             $methodDefinitions = $methodDefinitions->plus($_methodDefinitions);
-            $abstractMethods = $abstractMethods->withoutMethods($_methodDefinitions->methodNames());
+            $unprocessedMethods = $unprocessedMethods->withoutMethods($_methodDefinitions->methodNames());
         }
-        if (!$abstractMethods->isEmpty()) {
+        if (!$unprocessedMethods->filterAbstract()->isEmpty()) {
             throw new \Exception('Some abstract methods could not be processed.');
         }
         return $methodDefinitions;

@@ -14,9 +14,10 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
  */
 class AccessorMethodProcessor extends MethodProcessor
 {
-    public function matchMethods(ReflectionMethodCollection $reflectionMethods): array
+    public function matchMethods(ReflectionMethodCollection $methods): array
     {
-        return $reflectionMethods
+        return $methods
+            ->filterAbstract()
             ->filter(function (ReflectionMethod $reflectionMethod) {
                 return $reflectionMethod->getNumberOfParameters() === 0;
             })
