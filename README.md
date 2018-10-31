@@ -5,9 +5,7 @@
 [![Build Status](https://travis-ci.org/Space48/auto-value-php.svg?branch=master)](https://travis-ci.org/Space48/auto-value-php)
 
 *AutoValue PHP is a port of [Google AutoValue] (Kevin Bourrillion, Éamonn
-McManus) from Java to PHP. The documentation in this package is copied directly
-from Google AutoValue and then translated from Java to PHP, with irrelevant
-documentation removed.*
+McManus) from Java to PHP.*
 
 **Value classes** are increasingly common in PHP projects. These are classes for
 which you want to treat any two instances with suitably equal field values as
