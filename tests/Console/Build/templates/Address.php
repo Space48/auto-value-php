@@ -29,11 +29,13 @@ abstract class Address implements MyValueType
 
     public abstract function foo();
 
+    private $n = 0;
+
     /**
      * @Memoize
      */
-    public function linesString(): string
+    public function n(): int
     {
-        return implode(', ', $this->lines());
+        return $this->n++;
     }
 }

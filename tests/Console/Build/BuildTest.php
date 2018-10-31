@@ -44,15 +44,21 @@ class BuildTest extends TestCase
         }
         self::assertNull($address);
 
-        $address1 = Address::builder()
+        $addressBuilder = Address::builder()
             ->setLines('line1')
             ->setCountry('UK')
-            ->setPostCode($postCode = new PostCode())
-            ->build();
+            ->setPostCode($postCode = new PostCode());
+        $address1 = $addressBuilder->build();
         self::assertTrue($address1->equals($address1));
+        self::assertTrue($address1->equals($addressBuilder->build()));
         self::assertSame(['line1'], $address1->lines());
         self::assertSame('UK', $address1->country());
         self::assertSame($postCode, $address1->postCode());
+
+        // test @Memoize
+        self::assertSame(0, $address1->n());
+        self::assertSame(0, $address1->n());
+        self::assertTrue($address1->equals($addressBuilder->build()));
 
         $address2 = Address::builder()
             ->setLines('line2')
