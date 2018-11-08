@@ -46,6 +46,10 @@ class BuildCommand extends Command
             $absoluteFilePath = $targetDirectory . DIRECTORY_SEPARATOR . $relativeFilePath;
             $absoluteFilePathWithoutResolution = ($specifiedTargetDirectory ?: $sourceDirectory) . \DIRECTORY_SEPARATOR . $relativeFilePath;
             \fwrite(\STDOUT, "$absoluteFilePathWithoutResolution\n");
+            $directoryPath = \dirname($absoluteFilePath);
+            if (!\file_exists($directoryPath)) {
+                \mkdir($directoryPath, 0744, true);
+            }
             \file_put_contents($absoluteFilePath, "<?php\n$autoClass\n");
         }
     }
