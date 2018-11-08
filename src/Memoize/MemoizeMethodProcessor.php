@@ -18,7 +18,7 @@ class MemoizeMethodProcessor extends MethodProcessor
         return $methods
             ->filterConcrete()
             ->filter(function (ReflectionMethod $reflectionMethod) {
-                return preg_match('{\*\s*\@Memoize\s*$}m', $reflectionMethod->getDocComment()) > 0;
+                return preg_match('{\*\s+\@Memoize\s}m', $reflectionMethod->getDocComment()) > 0;
             })
             ->filter(function (ReflectionMethod $reflectionMethod) {
                 return $reflectionMethod->getNumberOfParameters() === 0;

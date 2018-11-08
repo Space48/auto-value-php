@@ -31,9 +31,7 @@ abstract class Address implements MyValueType
 
     private $n = 0;
 
-    /**
-     * @Memoize
-     */
+    /** @Memoize */
     public function n(): int
     {
         return $this->n++;
