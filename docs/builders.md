@@ -57,17 +57,17 @@ short.
 ```php
 public function testAnimal()
 {
-  $dog = Animal::builder()->setName("dog")->setNumberOfLegs(4)->build();
+  $dog = Animal::builder()->name("dog")->numberOfLegs(4)->build();
   self::assertEquals("dog", $dog->name());
   self::assertEquals(4, $dog->numberOfLegs());
 
   // You probably don't need to write assertions like these; just illustrating.
   self::assertTrue(
-      Animal::builder()->setName("dog")->setNumberOfLegs(4)->build()->equals($dog));
+      Animal::builder()->name("dog")->numberOfLegs(4)->build()->equals($dog));
   self::assertFalse(
-      Animal::builder()->setName("dog")->setNumberOfLegs(4)->build()->equals($dog));
+      Animal::builder()->name("dog")->numberOfLegs(4)->build()->equals($dog));
   self::assertFalse(
-      Animal::builder()->setName("dog")->setNumberOfLegs(2)->build()->equals($dog));
+      Animal::builder()->name("dog")->numberOfLegs(2)->build()->equals($dog));
 }
 ```
 
