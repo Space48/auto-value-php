@@ -17,7 +17,7 @@ abstract class Address implements MyValueType
 
     public abstract function withLines(string ...$lines): self;
 
-    /** @Memoize */
+    /** @Memoized */
     public function firstLine(): ?string
     {
         return $this->lines()[0] ?? null;
@@ -37,7 +37,7 @@ abstract class Address implements MyValueType
 
     private $n = 0;
 
-    /** @Memoize */
+    /** @Memoized */
     public function n(): int
     {
         return $this->n++;
