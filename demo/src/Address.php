@@ -13,6 +13,9 @@ abstract class Address implements MyValueType
 
     public abstract function toBuilder(): AddressBuilder;
 
+    /**
+     * @return string[]
+     */
     public abstract function lines(): array;
 
     public abstract function withLines(string ...$lines): self;

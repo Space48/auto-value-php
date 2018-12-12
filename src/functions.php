@@ -35,12 +35,12 @@ function generateParameters(array $reflectionParameters): string
     }, $reflectionParameters));
 }
 
-function generateReturnTypeHint(?ReflectionType $returnType, ?ReflectionClass $declaringClass): string
+function generateReturnTypeHint(?ReflectionType $returnType, ReflectionClass $declaringClass): string
 {
     return $returnType === null ? '' : ': ' . generateTypeHint($returnType, $declaringClass);
 }
 
-function generateTypeHint(ReflectionType $type, ?ReflectionClass $declaringClass): string
+function generateTypeHint(ReflectionType $type, ReflectionClass $declaringClass): string
 {
     $prefix = $type->allowsNull() ? '?' : '';
     $normalizedType = (string)$type === 'self'

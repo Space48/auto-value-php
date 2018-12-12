@@ -1,6 +1,9 @@
 <?php
 namespace AutoValue;
 
+use phpDocumentor\Reflection\Type;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionProperty;
 use Roave\BetterReflection\Reflection\ReflectionType;
 
 /**
@@ -8,10 +11,11 @@ use Roave\BetterReflection\Reflection\ReflectionType;
  */
 class Property
 {
-    public static function named(string $name): self
+    public static function fromAccessorMethod(string $propertyName, ReflectionMethod $accessorMethod): self
     {
         $property = new self;
-        $property->name = $name;
+        $property->name = $propertyName;
+        $property->accessorMethod = $accessorMethod;
         return $property;
     }
 
@@ -20,26 +24,38 @@ class Property
         return $this->name;
     }
 
-    public function type(): ?ReflectionType
+    public function phpType(): ?ReflectionType
     {
-        return $this->type;
+        if (!$this->phpType) {
+            $this->phpType = $this->accessorMethod->getReturnType();
+        }
+        return $this->phpType;
     }
 
-    public function withType(?ReflectionType $type): self
+    public function docBlockType(): string
     {
-        $result = clone $this;
-        $result->type = $type;
-        return $result;
+        if (!isset($this->docBlockType)) {
+            $docBlockTypes = $this->accessorMethod->getDocBlockReturnTypes();
+            $this->docBlockType = $docBlockTypes
+                ? \implode('|', $docBlockTypes)
+                : ($this->phpType()
+                    ? generateTypeHint($this->phpType(), $this->accessorMethod->getDeclaringClass())
+                    : 'mixed'
+                );
+        }
+        return $this->docBlockType;
     }
 
     public function isRequired(): bool
     {
-        return $this->type && !$this->type->allowsNull();
+        return $this->phpType() && !$this->phpType()->allowsNull();
     }
 
     private $name;
+    /** @var ReflectionMethod */
+    private $accessorMethod;
     /** @var ReflectionType|null */
-    private $type;
+    private $phpType;
 
     private function __construct()
     {

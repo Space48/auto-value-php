@@ -18,13 +18,8 @@ class ValueClassGenerator
     {
         // todo include type in properties constant
         $propertyDeclarations = \implode("\n", $properties->map(function (Property $property) use ($baseClass) {
-            if ($property->type()) {
-                $type = generateTypeHint($property->type(), $baseClass);
-            } else {
-                $type = 'mixed';
-            }
             return <<<THEPHP
-    /** @var $type */
+    /** @var {$property->docBlockType()} */
     private \${$property->name()};
 THEPHP;
         }));

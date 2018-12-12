@@ -29,7 +29,7 @@ class AccessorMethodProcessor extends MethodProcessor
         $templateUsesPrefixes = self::templateUsesPrefixes($matchedMethods);
         return $matchedMethods->reduce(PropertyCollection::create(), function (PropertyCollection $properties, ReflectionMethod $method) use ($templateUsesPrefixes) {
             $propertyName = self::getPropertyName($templateUsesPrefixes, $method);
-            $property = Property::named($propertyName)->withType($method->getReturnType());
+            $property = Property::fromAccessorMethod($propertyName, $method);
             return $properties->withProperty($property);
         });
     }

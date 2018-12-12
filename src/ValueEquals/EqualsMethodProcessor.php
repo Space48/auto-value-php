@@ -50,25 +50,25 @@ class EqualsMethodProcessor extends MethodProcessor
         string $valueParam,
         PropertyCollection $properties
     ): string {
-        $typedProperties = $properties->filter(function (Property $property) { return $property->type() !== null; });
-        $arrayProperties = $typedProperties->filter(function (Property $property) { return (string)$property->type() === 'array'; });
-        $classProperties = $typedProperties->filter(function (Property $property) { return isClass($property->type()); });
+        $typedProperties = $properties->filter(function (Property $property) { return $property->phpType() !== null; });
+        $arrayProperties = $typedProperties->filter(function (Property $property) { return (string)$property->phpType() === 'array'; });
+        $classProperties = $typedProperties->filter(function (Property $property) { return isClass($property->phpType()); });
         $valueObjectProperties = $classProperties->filter(function (Property $property) use ($templateClass) {
             return $this->isValueObject($templateClass, $property);
         });
         $mixedProperties = $properties->filter(function (Property $property) {
-            return $property->type() === null
-                || (string)$property->type() === 'object'
-                || (string)$property->type() === 'iterable'
-                || (string)$property->type() === 'callable';
+            return $property->phpType() === null
+                || (string)$property->phpType() === 'object'
+                || (string)$property->phpType() === 'iterable'
+                || (string)$property->phpType() === 'callable';
         });
 
         $testsForTypedProperties = \array_merge(
             ["\${$valueParam} instanceof self"],
 
             $typedProperties
-                ->filter(function (Property $property) { return !isClass($property->type()); })
-                ->filter(function (Property $property) { return (string)$property->type() !== 'array'; })
+                ->filter(function (Property $property) { return !isClass($property->phpType()); })
+                ->filter(function (Property $property) { return (string)$property->phpType() !== 'array'; })
                 ->mapPropertyNames(function (string $propertyName) use ($valueParam) {
                     return "\$this->$propertyName === \${$valueParam}->$propertyName";
                 }),
@@ -137,7 +137,7 @@ THEPHP;
 
     private function isValueObject(ReflectionClass $templateClass, Property $property): bool
     {
-        $reflectionClass = getClass($templateClass, $property->type());
+        $reflectionClass = getClass($templateClass, $property->phpType());
         return $reflectionClass->hasMethod('equals')
             && $this->matchMethod($reflectionClass->getMethod('equals'));
     }

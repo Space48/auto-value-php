@@ -6,7 +6,7 @@ namespace AutoValue\Demo;
  */
 final class AutoValue_Address extends Address
 {
-    /** @var array */
+    /** @var string[] */
     private $lines;
     /** @var ?string */
     private $city;
@@ -64,6 +64,7 @@ final class AutoValue_Address extends Address
     public function withLines(string ...$lines): \AutoValue\Demo\Address
     {
         $result = clone $this;
+        unset($result->__memoized);
         $result->lines = $lines;
         return $result;
     }
@@ -71,6 +72,7 @@ final class AutoValue_Address extends Address
     public function withCountry(string $country): \AutoValue\Demo\Address
     {
         $result = clone $this;
+        unset($result->__memoized);
         $result->country = $country;
         return $result;
     }
