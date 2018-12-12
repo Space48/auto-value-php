@@ -94,6 +94,18 @@ class BuildTest extends TestCase
         self::assertTrue($command1->equals($command2->withPayload($command1->payload())));
     }
 
+    public function testMemoizedValuesResetOnClone(): void
+    {
+        $address = Address::builder()
+            ->setLines('foo')
+            ->setCountry('UK')
+            ->setPostCode(new PostCode())
+            ->build();
+        self::assertSame('foo', $address->firstLine());
+        $address2 = $address->withLines('bar');
+        self::assertSame('bar', $address2->firstLine());
+    }
+
     private function createTempDir(): string
     {
         $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'auto-value-php-tests-' . \random_int(1, 1000000);

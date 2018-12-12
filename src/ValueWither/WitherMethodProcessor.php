@@ -37,6 +37,7 @@ class WitherMethodProcessor extends MethodProcessor
             $parameterName = $method->getParameters()[0]->getName();
             $methodBody = <<<THEPHP
         \$result = clone \$this;
+        unset(\$result->__memoized);
         \$result->$propertyName = \${$parameterName};
         return \$result;
 THEPHP;

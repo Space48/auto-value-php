@@ -17,6 +17,12 @@ abstract class Address implements MyValueType
 
     public abstract function withLines(string ...$lines): self;
 
+    /** @Memoize */
+    public function firstLine(): ?string
+    {
+        return $this->lines()[0] ?? null;
+    }
+
     public abstract function city(): ?string;
 
     public abstract function country(): string;
