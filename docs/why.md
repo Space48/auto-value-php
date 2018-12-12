@@ -7,8 +7,8 @@ the following characteristics:
 *   No runtime dependencies
 *   Negligible cost to performance
 *   Very few limitations on what your class can do
-*   Extralinguistic "magic" kept to an absolute minimum (uses only standard Java
-    platform technologies, in the manner they were intended)
+*   Extralinguistic "magic" kept to an absolute minimum (uses only standard PHP
+    technologies)
 
 This [slide presentation] from the authors of the original AutoValue package for
 Java compares AutoValue to numerous alternatives and explains why they think it
