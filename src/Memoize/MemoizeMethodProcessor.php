@@ -42,10 +42,7 @@ class MemoizeMethodProcessor extends MethodProcessor
 THEPHP;
                 } else {
                     $methodBody = <<<THEPHP
-        if (!isset(\$this->__memoized['$methodName'])) {
-            \$this->__memoized['$methodName'] = parent::$methodName();
-        }
-        return \$this->__memoized['$methodName'];
+        return \$this->__memoized['$methodName'] ?? (\$this->__memoized['$methodName'] = parent::$methodName());
 THEPHP;
                 }
                 return $methodDefinitions->withAdditionalMethodDefinition(MethodDefinition::of($method, $methodBody));
