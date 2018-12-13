@@ -39,15 +39,13 @@ final class AutoValue_Address extends Address
             if (\is_array($value1)) {
                 $equal = \is_array($value2) && \count($value1) === \count($value2) && !\array_udiff_assoc($value1, $value2, $compareValues);
             } else {
-                $equal = $value1 === $value2
-                    || (\method_exists($value1, 'equals') ? $value1->equals($value2) : \is_object($value1) && $value1 == $value2);
+                $equal = $value1 === $value2 || (\method_exists($value1, 'equals') ? $value1->equals($value2) : \is_object($value1) && $value1 == $value2);
             }
             return $equal ? 0 : 1;
         };
         return $compareValues($this->metadata, $foo->metadata) === 0
             && $compareValues($this->foo, $foo->foo) === 0
-            && \count($this->lines) === \count($foo->lines)
-                && !\array_udiff_assoc($this->lines, $foo->lines, $compareValues);
+            && \count($this->lines) === \count($foo->lines) && !\array_udiff_assoc($this->lines, $foo->lines, $compareValues);
     }
 
     public function toBuilder(): \AutoValue\Demo\AddressBuilder
