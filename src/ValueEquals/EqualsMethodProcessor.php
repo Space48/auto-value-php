@@ -101,13 +101,15 @@ class EqualsMethodProcessor extends MethodProcessor
             $arrayProperties
                 ->filter(function (Property $property) { return $property->isRequired(); })
                 ->mapPropertyNames(function (string $propertyName) use ($valueParam) {
-                    return "!\array_udiff_assoc(\$this->{$propertyName}, \${$valueParam}->$propertyName, \$compareValues)";
+                    return "\count(\$this->{$propertyName}) === \count(\${$valueParam}->$propertyName)
+                && !\array_udiff_assoc(\$this->{$propertyName}, \${$valueParam}->$propertyName, \$compareValues)";
                 }),
 
             $arrayProperties
                 ->filter(function (Property $property) { return !$property->isRequired(); })
                 ->mapPropertyNames(function (string $propertyName) use ($valueParam) {
-                    return "\$this->{$propertyName} === null ? \${$valueParam}->$propertyName === null : !\array_udiff_assoc(\$this->{$propertyName}, \${$valueParam}->$propertyName, \$compareValues)";
+                    return "\$this->{$propertyName} === null ? \${$valueParam}->$propertyName === null
+                : (\count(\$this->{$propertyName}) === \count(\${$valueParam}->$propertyName) && !\array_udiff_assoc(\$this->{$propertyName}, \${$valueParam}->$propertyName, \$compareValues))";
                 })
         );
 
@@ -119,7 +121,7 @@ class EqualsMethodProcessor extends MethodProcessor
         }
         \$compareValues = static function (\$value1, \$value2) use (&\$compareValues) {
             if (\is_array(\$value1)) {
-                \$equal = \is_array(\$value2) && !\array_udiff_assoc(\$value1, \$value2, \$compareValues);
+                \$equal = \is_array(\$value2) && \count(\$value1) === \count(\$value2) && !\array_udiff_assoc(\$value1, \$value2, \$compareValues);
             } else {
                 \$equal = \$value1 === \$value2
                     || (\method_exists(\$value1, 'equals') ? \$value1->equals(\$value2) : \is_object(\$value1) && \$value1 == \$value2);

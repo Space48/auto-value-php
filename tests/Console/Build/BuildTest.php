@@ -31,6 +31,20 @@ class BuildTest extends TestCase
         $this->requireFiles($expectedAutoClassFilePaths);
     }
 
+    public function testArrayComparison(): void
+    {
+        $address1 = Address::builder()
+            ->setLines('line1')
+            ->setCountry('UK')
+            ->setPostCode(new PostCode())
+            ->build();
+
+        $address2 = $address1->withLines('line1', 'line2');
+
+        self::assertFalse($address1->equals($address2));
+        self::assertFalse($address2->equals($address1));
+    }
+
     public function testAddressAutoClass(): void
     {
         $address = null;

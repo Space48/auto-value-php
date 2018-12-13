@@ -30,7 +30,7 @@ final class AutoValue_Command extends Command
         }
         $compareValues = static function ($value1, $value2) use (&$compareValues) {
             if (\is_array($value1)) {
-                $equal = \is_array($value2) && !\array_udiff_assoc($value1, $value2, $compareValues);
+                $equal = \is_array($value2) && \count($value1) === \count($value2) && !\array_udiff_assoc($value1, $value2, $compareValues);
             } else {
                 $equal = $value1 === $value2
                     || (\method_exists($value1, 'equals') ? $value1->equals($value2) : \is_object($value1) && $value1 == $value2);
