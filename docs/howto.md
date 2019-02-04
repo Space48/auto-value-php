@@ -238,7 +238,7 @@ Note that giving value semantics to a mutable type is widely considered a
 questionable practice in the first place. Equal instances of a value class are
 treated as *interchangeable*, but they can't truly be interchangeable if one
 might be mutated and the other not.
-=
+
 ## <a name="inherit"></a>... have one `@AutoValue` class extend another?
 
 This ability is intentionally not supported, because there is no way to do it
