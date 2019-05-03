@@ -46,11 +46,7 @@ $propertyDeclarations
     
     protected function __construct(array \$propertyValues = [])
     {
-        foreach ([$requiredPropertiesExported] as \$property) {
-            if (!isset(\$propertyValues[\$property])) {
-                throw new \Exception("Required property \$property not initialized.");
-            }
-        }
+        self::___checkRequiredPropertiesExist(\$propertyValues);
         
         foreach (\$propertyValues as \$property => \$value) {
             \$this->\$property = \$value;
@@ -58,6 +54,18 @@ $propertyDeclarations
     }
     
 $methodDeclarations
+    
+    /**
+     * @internal
+     */
+    public static function ___checkRequiredPropertiesExist(array \$propertyValues): void
+    {
+        foreach ([$requiredPropertiesExported] as \$property) {
+            if (!isset(\$propertyValues[\$property])) {
+                throw new \Exception("Required property \$property not initialized.");
+            }
+        }
+    }
 
     /**
      * @internal
