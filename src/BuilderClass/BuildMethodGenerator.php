@@ -25,20 +25,20 @@ class BuildMethodGenerator implements MethodGenerator
                 $methodBody = <<<THEPHP
         return $valueAutoClass::___withTrustedValues(\$this->propertyValues);
 THEPHP;
-                $requiredProperties = $properties
-                    ->filter(function (Property $property) { return $property->isRequired(); })
-                    ->propertyNames();
-                if ($requiredProperties) {
-                    $requiredPropertiesExported = \implode(', ', \array_map(function ($property) { return "'$property'"; }, $requiredProperties));
-                    $methodBody = <<<THEPHP
-        foreach ([$requiredPropertiesExported] as \$property) {
-            if (!isset(\$this->propertyValues[\$property])) {
-                throw new \Exception("Required property \$property not initialized.");
-            }
-        }
-$methodBody
-THEPHP;
-                }
+//                $requiredProperties = $properties
+//                    ->filter(function (Property $property) { return $property->isRequired(); })
+//                    ->propertyNames();
+//                if ($requiredProperties) {
+//                    $requiredPropertiesExported = \implode(', ', \array_map(function ($property) { return "'$property'"; }, $requiredProperties));
+//                    $methodBody = <<<THEPHP
+//        foreach ([$requiredPropertiesExported] as \$property) {
+//            if (!isset(\$this->propertyValues[\$property])) {
+//                throw new \Exception("Required property \$property not initialized.");
+//            }
+//        }
+//$methodBody
+//THEPHP;
+//                }
                 return $methodDefinitions->withAdditionalMethodDefinition(MethodDefinition::of($method, $methodBody));
             });
     }

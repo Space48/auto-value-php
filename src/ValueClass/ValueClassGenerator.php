@@ -28,6 +28,12 @@ THEPHP;
             return generateConcreteMethod($methodDefinition->reflection(), $methodDefinition->body());
         }));
 
+        $requiredProperties = $properties
+            ->filter(function (Property $property) { return $property->isRequired(); })
+            ->propertyNames();
+
+        $requiredPropertiesExported = \implode(', ', \array_map(function ($property) { return "'$property'"; }, $requiredProperties));
+
         return <<<THEPHP
 namespace {$baseClass->getNamespaceName()};
 
@@ -40,6 +46,12 @@ $propertyDeclarations
     
     protected function __construct(array \$propertyValues = [])
     {
+        foreach ([$requiredPropertiesExported] as \$property) {
+            if (!isset(\$propertyValues[\$property])) {
+                throw new \Exception("Required property \$property not initialized.");
+            }
+        }
+        
         foreach (\$propertyValues as \$property => \$value) {
             \$this->\$property = \$value;
         }
