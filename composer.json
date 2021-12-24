@@ -1,5 +1,5 @@
 {
-    "name": "space48/auto-value",
+    "name": "tshabatyn/auto-value",
     "type": "lib",
     "description": "Generated immutable value classes for PHP7.1+",
     "keywords": [
@@ -12,10 +12,14 @@
         {
             "name": "Josh Di Fabio",
             "email": "joshdifabio@gmail.com"
+        },
+        {
+            "name": "Taras Shabatyn",
+            "email": "taras.shabatin@gmail.com"
         }
     ],
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.4",
         "roave/better-reflection": "^4.4",
         "symfony/console": "^4.1"
     },
